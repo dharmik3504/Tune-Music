@@ -6,7 +6,7 @@ export default function Dashboard() {
   const data = async () => {
     let res = null;
     try {
-      res = await fetch("/api/youtubePlaylist", {
+      res = await fetch("/api/spotifyPlaylist", {
         credentials: "include",
       });
       console.log(await res.json());
@@ -43,25 +43,7 @@ export default function Dashboard() {
   // );
 
   // const { items } = await getSpotifyPlaylistData.json();
-  // const YT_URL = [
-  //   "https://youtube.googleapis.com/youtube/v3/playlists?part=contentDetails&id=RDCLAK5uy_l_Bj8rMsjkhFMMs-eLrA17_zjr9r6g_Eg",
-  //   "https://youtube.googleapis.com/youtube/v3/playlistItems?part=contentDetails&playlistId=RDCLAK5uy_l_Bj8rMsjkhFMMs-eLrA17_zjr9r6g_Eg",
-  // ];
-  // let getYoutubePlaylistData = null;
 
-  // try {
-  //   getYoutubePlaylistData = await fetch(YT_URL[1], {
-  //     headers: new Headers({
-  //       Authorization: `Bearer ${session.accessToken}`,
-  //     }),
-  //   });
-  // } catch (e) {
-  //   console.log(e);
-  // }
-  // const data = await getYoutubePlaylistData.json();
-
-  // console.log(data);
-  // console.log(session.accessToken);
   // const renderSpotifyData=items.map((item, index) => (
   //     <div key={item.track.id}>{`${index + 1} - ${item.track.name}`}</div>
   //   ));
