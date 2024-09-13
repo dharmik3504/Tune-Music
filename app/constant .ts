@@ -1,5 +1,8 @@
-export const debug1 = (functionName: string, whatToLog: any) => {
-  console.log(`-----------${functionName}-----------------`);
-  console.log(whatToLog);
-  console.log("--------------------------------");
-};
+interface PlatformService {
+  name: string;
+  selection: "source" | "destination" | null;
+}
+// enum isSelected {
+//   source = "source",
+//   destination = "destination",
+// }
