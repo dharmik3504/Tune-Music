@@ -1,12 +1,12 @@
 "use client";
-import { Session } from "next-auth";
-import { signIn, signOut, useSession } from "next-auth/react";
 
-import { useEffect, useState } from "react";
+import { signIn, useSession } from "next-auth/react";
+
+import { useRouter } from "next/navigation";
 
 export const AppBar = () => {
   const session = useSession();
-
+  const router = useRouter();
   return (
     <div>
       <div className="flex justify-between p-2 m-2 ">
