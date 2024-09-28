@@ -1,7 +1,20 @@
 "use client";
 
-import { signIn, useSession } from "next-auth/react";
-
+import { signIn, signOut, useSession } from "next-auth/react";
+import { LifeBuoy, LogOut, Settings, User, UserPlus } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
 
 export const AppBar = () => {
@@ -13,11 +26,55 @@ export const AppBar = () => {
         <div>Tune Music</div>
         <div>
           {session.data?.user ? (
-            <button onClick={() => router.push("/dashboard")}>
-              {session.data.user.name}
-            </button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline">
+                  {session.data?.user ? session.data?.user.name : "Sign In"}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <DropdownMenuItem>
+                    <User className="mr-2 h-4 w-4" />
+                    <span>Profile</span>
+                    <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                  </DropdownMenuItem>
+
+                  <DropdownMenuItem>
+                    <Settings className="mr-2 h-4 w-4" />
+                    <span>Settings</span>
+                    <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+
+                <DropdownMenuSeparator />
+
+                <DropdownMenuItem>
+                  <LifeBuoy className="mr-2 h-4 w-4" />
+                  <span>Support</span>
+                </DropdownMenuItem>
+
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => signOut()}>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Log out</span>
+                  <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           ) : (
-            <button onClick={() => signIn()}>Sign in</button>
+            <Button
+              variant="outline"
+              onClick={() => {
+                signIn();
+                router.push("/");
+              }}
+            >
+              Sign In
+            </Button>
           )}
         </div>
       </div>

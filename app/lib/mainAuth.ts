@@ -3,7 +3,6 @@ import { JWT } from "next-auth/jwt";
 import GoogleProvider from "next-auth/providers/google";
 import SpotifyProvider from "next-auth/providers/spotify";
 import { db } from "./db";
-import { pages } from "next/dist/build/templates/app-page";
 
 const scopes = ["playlist-read-private"].join(",");
 const params = {
@@ -19,6 +18,7 @@ export interface session extends Session {
     image: string;
     googleAccessToken: string;
     spotifyAccessToken: string;
+    youtubeToken: string;
   };
 }
 export interface jwt extends JWT {
@@ -41,11 +41,14 @@ export const mainAuthConfig = {
   ],
   pages: {
     signIn: "/signin",
+    transfertoYT: "/youtube",
   },
   secret: process.env.NEXTAUTH_SECRET ?? "secret",
   callbacks: {
     async signIn(params) {
-      console.log(params);
+      if (params.account.scope) {
+      }
+
       if (!params.user.email) {
         return false;
       }
@@ -67,12 +70,10 @@ export const mainAuthConfig = {
         });
         return true;
       } catch (e) {
-        console.log(e);
         return false;
       }
     },
     async jwt({ token, account, profile, user }) {
-      console.log(account);
       if (user && user.email && account) {
         const dbUser = await db.user.findUnique({
           where: {

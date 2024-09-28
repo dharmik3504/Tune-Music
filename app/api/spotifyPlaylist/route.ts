@@ -1,8 +1,8 @@
-import { authConfig } from "@/app/lib/auth";
+import { mainAuthConfig } from "@/app/lib/mainAuth";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 export async function GET() {
-  const session = await getServerSession(authConfig);
+  const session = await getServerSession(mainAuthConfig);
   const SPOTIFY_URL =
     "https://api.spotify.com/v1/playlists/37i9dQZF1DX0XUfTFmNBRM/tracks?";
   const params = new URLSearchParams();
@@ -10,7 +10,7 @@ export async function GET() {
 
   const getSpotifyPlaylistData = await fetch(SPOTIFY_URL + params, {
     headers: new Headers({
-      Authorization: `Bearer ${session.accessToken}`,
+      Authorization: `Bearer ${session.googleAccessToken}`,
     }),
   });
   const res = await getSpotifyPlaylistData.json();
