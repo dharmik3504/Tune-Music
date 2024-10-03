@@ -22,13 +22,13 @@ export const AppBar = () => {
   const router = useRouter();
   return (
     <div>
-      <div className="flex justify-between p-2 m-2 ">
+      <div className="flex justify-between p-2 m-2 bg-[rgb(36,42,72)] text-white  grid-cols-1 ">
         <div>Tune Music</div>
         <div>
           {session.data?.user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline">
+                <Button variant="secondary">
                   {session.data?.user ? session.data?.user.name : "Sign In"}
                 </Button>
               </DropdownMenuTrigger>

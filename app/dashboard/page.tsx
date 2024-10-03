@@ -28,7 +28,7 @@ export default function Dashboard() {
   const [isLoading, setIsLoading] = useState(false);
   const [code, setCode] = useState("");
 
-  const data = async () => {
+  const generateAuthUrl = async () => {
     try {
       const res = await fetch("/api/youtubePlaylist");
 
@@ -41,7 +41,7 @@ export default function Dashboard() {
   };
   useEffect(() => {
     const fetchData = async () => {
-      const res = await data();
+      const res = await generateAuthUrl();
       // const data1 = await checkIfUserHaveSignIn();
       setURL(res.message);
       // setCode(data1.code);
@@ -58,7 +58,7 @@ export default function Dashboard() {
   };
 
   const handleClick = async (serviceName: string) => {
-    if (serviceName == "Youtube") {
+    if (serviceName == "YouTube") {
       openNewWindow(URL);
     } else if (serviceName == "Spotify") {
       await signIn("spotify", undefined, {
@@ -73,13 +73,31 @@ export default function Dashboard() {
   const services: PlatformService[] = [
     {
       name: "Spotify",
-      selection: null,
-      inputType: <input type="text"></input>,
+      icon: "https://upload.wikimedia.org/wikipedia/en/1/19/Spotify_logo_without_text.svg",
     },
     {
-      name: "Youtube",
-      selection: null,
-      inputType: <input type="text"></input>,
+      name: "Apple Music",
+      icon: "https://upload.wikimedia.org/wikipedia/en/6/62/Apple_Music_logo.svg",
+    },
+    {
+      name: "Amazon Music",
+      icon: "https://upload.wikimedia.org/wikipedia/commons/e/e2/Amazon_Music_logo.svg",
+    },
+    {
+      name: "YouTube",
+      icon: "https://upload.wikimedia.org/wikipedia/commons/0/0c/YouTube_Music_logo.svg",
+    },
+    {
+      name: "Tidal",
+      icon: "https://upload.wikimedia.org/wikipedia/en/5/56/TIDAL_logo.svg",
+    },
+    {
+      name: "Deezer",
+      icon: "https://upload.wikimedia.org/wikipedia/commons/6/68/Deezer_logo.svg",
+    },
+    {
+      name: "Pandora",
+      icon: "https://upload.wikimedia.org/wikipedia/en/3/34/Pandora_logo.svg",
     },
   ];
 

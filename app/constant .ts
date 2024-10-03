@@ -1,6 +1,5 @@
 interface PlatformService {
   name: string;
-  selection: "source" | "destination" | null;
-  inputType: React.InputHTMLAttributes<InputEvent>;
+  // selection: "source" | "destination" | null;
+  icon: string;
 }
-

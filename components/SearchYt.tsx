@@ -10,40 +10,39 @@ interface SearchYTProps {
 export const SearchYT = (props: SearchYTProps) => {
   const [accessToken, setAccessToken] = useState("");
   const [soruce, setSoruce] = useState("");
+  const [csv, setCsv] = useState("");
   const handleClick = async () => {
     if (soruce) {
-      const token = await fetch(
-        "/api/youtube/redirect?code=4/0AQlEd8x53Ex6P7YknuqaFSaN0t2EYehWM60DbDX0xszZ5ue35yssY1kPzdo1dS8i39prEw&scope=https://www.googleapis.com/auth/youtube",
-        {
-          method: "post",
-        }
-      );
+      const token = await fetch("/api/youtube/redirect", {
+        method: "post",
+      });
 
       if (token.status == 200) {
         const data = await token.json();
+        let playlistData = "Name,Link\n";
         setAccessToken(data.accessToken);
 
         const { items } = await getYTplaylistData(data.accessToken);
-        console.log(items);
-        for (var i = 0; i < items.length; i++) {
+
+        for (let i = 0; i < items.length; i++) {
           const videoId = items[i].contentDetails.videoId;
           const name = items[i].snippet.title;
           const description = items[i].snippet.description;
 
-          console.log(videoId);
+          const link = "https://www.youtube.com/watch?v=" + videoId;
+          playlistData += name + "," + link + "\n";
         }
+
+        setCsv(playlistData);
       } else {
         return "something went wrong";
       }
 
       // const token = await getAccessToken(props.code);
+      console.log(csv);
     }
   };
-  const checkIfUserHaveSignIn = async () => {
-    const res = await fetch("/api/youtube/redirect");
 
-    return await res.json();
-  };
   const getYTplaylistData = async (accessToken: string) => {
     const URL = "https://youtube.googleapis.com/youtube/v3/playlistItems?";
     const params = new URLSearchParams();
@@ -57,11 +56,6 @@ export const SearchYT = (props: SearchYTProps) => {
     });
     return await res.json();
   };
-  useEffect(() => {
-    if (props.code) {
-      // getYTplaylistData(props.code);
-    }
-  });
 
   return (
     <div>
