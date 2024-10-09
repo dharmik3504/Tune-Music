@@ -55,7 +55,11 @@ export async function POST(req: NextRequest, res: NextResponse) {
   }
 }
 
-export const getAccessToken = async (code: string) => {
-  const { tokens } = await oauth2Client.getToken(code);
-  return NextResponse.json({ tokens });
+export const getYTplaylistDataById = () => {
+  const cookieStore = cookies();
+  const URLCode = cookieStore.get("access_token")?.value;
+  // const token = await fetch("/api/youtube/redirect", {
+  //   method: "post",
+  // });
+  console.log(URLCode);
 };

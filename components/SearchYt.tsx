@@ -3,16 +3,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
-interface SearchYTProps {
-  code: string;
-}
-
-export const SearchYT = (props: SearchYTProps) => {
+export const SearchYT = () => {
   const [accessToken, setAccessToken] = useState("");
   const [soruce, setSoruce] = useState("");
   const [csv, setCsv] = useState("");
   const handleClick = async () => {
     if (soruce) {
+      const abc = await fetch("/api/getYTplaylistDataById");
       const token = await fetch("/api/youtube/redirect", {
         method: "post",
       });
@@ -37,8 +34,6 @@ export const SearchYT = (props: SearchYTProps) => {
       } else {
         return "something went wrong";
       }
-
-      // const token = await getAccessToken(props.code);
       console.log(csv);
     }
   };
