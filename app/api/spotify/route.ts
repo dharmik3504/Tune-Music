@@ -41,7 +41,7 @@ export async function GET() {
   StreamingPlatformObj.push({
     name: "Spotify",
     icon: "https://upload.wikimedia.org/wikipedia/en/1/19/Spotify_logo_without_text.svg",
-    redirect_uri: Spotify_URL,
+    redirect_uri: Spotify_URL, 
   });
   StreamingPlatformObj.push({
     name: "YouTube",

@@ -4,80 +4,61 @@ import React, { useEffect, useState } from "react";
 import { NextResponse } from "next/server";
 import { SearchYT } from "@/components/SearchYt";
 import { getServiceObj, GetSpotifyUrl } from "../api/spotify/route";
+import { getSoptifyPlaylist } from "../lib/spotify";
+import { useCookies } from 'next-client-cookies';
 
 export default function Dashboard() {
+
   const [isLoading, setIsLoading] = useState(false);
 
   const [services, setServices] = useState([]);
-
+  const [spotifyCode, setSpotifyCode] = useState("");
+  const [spotifyAccessToken,setSpotifyAccessToken]=useState("")
+  const [spotifyData, setSpotifyData] = useState("");
+  
   useEffect(() => {
     const fetchData = async () => {
       // const res = await generateAuthUrl();
       const res1 = await fetch("/api/spotify");
       // setURL(res.message);
       const { StreamingPlatformObj } = await res1.json();
+      const cookie = await cookieStore.get("SpotifyCode");
+      const code = cookie?.value ?? "";
+      const spotify_access_token=await cookieStore.get("spotify_access_token")
+      setSpotifyAccessToken(spotify_access_token?.value ??"")
+      setSpotifyCode(code);
 
       setServices(StreamingPlatformObj);
       setIsLoading(true);
     };
 
     fetchData();
-  }, [isLoading]);
+  }, [isLoading,spotifyAccessToken]);
   const checkIfUserHaveSignIn = async () => {
     const res = await fetch("/api/youtube/redirect");
 
     return await res.json();
   };
 
-  const handleClick = async (service) => {
+  const handleClick = async (service:{name:string,redirect_uri:string}) => {
     if (service.name == "YouTube") {
       openNewWindow(service.redirect_uri);
     } else if (service.name == "Spotify") {
-      console.log("-----------------------");
       openNewWindow(service.redirect_uri);
+      const data=await getSoptifyPlaylist(spotifyAccessToken)
+      setSpotifyData(data)
     }
   };
   const openNewWindow = (url: string) => {
-    console.log(url);
     window.open(url, "_blank", "width=800,height=600");
   };
 
-  // const services: PlatformService[] = [
-  //   {
-  //     name: "Spotify",
-  //     icon: "https://upload.wikimedia.org/wikipedia/en/1/19/Spotify_logo_without_text.svg",
-  //   },
-  //   {
-  //     name: "Apple Music",
-  //     icon: "https://upload.wikimedia.org/wikipedia/en/6/62/Apple_Music_logo.svg",
-  //   },
-  //   {
-  //     name: "Amazon Music",
-  //     icon: "https://upload.wikimedia.org/wikipedia/commons/e/e2/Amazon_Music_logo.svg",
-  //   },
-  //   {
-  //     name: "YouTube",
-  //     icon: "https://upload.wikimedia.org/wikipedia/commons/0/0c/YouTube_Music_logo.svg",
-  //   },
-  //   {
-  //     name: "Tidal",
-  //     icon: "https://upload.wikimedia.org/wikipedia/en/5/56/TIDAL_logo.svg",
-  //   },
-  //   {
-  //     name: "Deezer",
-  //     icon: "https://upload.wikimedia.org/wikipedia/commons/6/68/Deezer_logo.svg",
-  //   },
-  //   {
-  //     name: "Pandora",
-  //     icon: "https://upload.wikimedia.org/wikipedia/en/3/34/Pandora_logo.svg",
-  //   },
-  // ];
-
+  //the platform service button
   const renderServices = services.map(
     (service: { name: string; icon: string; redirect_uri: string }) => (
       <div className="m-2" key={service.name}>
         <button
-          className="border border-black p-3 m-2"
+          className="border border-white p-3 m-2"
           onClick={(e) => {
             e.preventDefault();
             handleClick(service);
@@ -88,6 +69,7 @@ export default function Dashboard() {
       </div>
     )
   );
+  const getSpotifyData= async ()=>{await getSoptifyPlaylist(spotifyAccessToken)}
 
   return (
     <div>
@@ -98,7 +80,9 @@ export default function Dashboard() {
           <div className="flex  gap-2">{renderServices}</div>
 
           <div>
-            <SearchYT />
+            {/* <SearchYT /> */}
+            {spotifyAccessToken}
+          
           </div>
         </div>
       )}

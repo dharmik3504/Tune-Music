@@ -74,6 +74,10 @@ export const mainAuthConfig = {
       }
     },
     async jwt({ token, account, profile, user }) {
+     console.log("--------------------------------")
+      console.log(account,profile)
+     console.log("--------------------------------")
+
       if (user && user.email && account) {
         const dbUser = await db.user.findUnique({
           where: {
@@ -101,5 +105,6 @@ export const mainAuthConfig = {
         },
       };
     },
+    
   },
 };

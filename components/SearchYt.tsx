@@ -9,6 +9,7 @@ export const SearchYT = () => {
   const [csv, setCsv] = useState("");
   const handleClick = async () => {
     if (soruce) {
+      console.log(soruce)
       const abc = await fetch("/api/getYTplaylistDataById");
       const token = await fetch("/api/youtube/redirect", {
         method: "post",
@@ -38,19 +39,7 @@ export const SearchYT = () => {
     }
   };
 
-  const getYTplaylistData = async (accessToken: string) => {
-    const URL = "https://youtube.googleapis.com/youtube/v3/playlistItems?";
-    const params = new URLSearchParams();
-    params.append("part", "snippet,contentDetails,id");
-    params.append("maxResults", "50");
-    params.append("playlistId", "RDCLAK5uy_n9Fbdw7e6ap-98_A-8JYBmPv64v-Uaq1g");
-    const res = await fetch(URL + params, {
-      headers: {
-        Authorization: "Bearer " + accessToken,
-      },
-    });
-    return await res.json();
-  };
+  
 
   return (
     <div>
@@ -69,4 +58,17 @@ export const SearchYT = () => {
       </Button>
     </div>
   );
+};
+const getYTplaylistData = async (accessToken: string) => {
+  const URL = "https://youtube.googleapis.com/youtube/v3/playlistItems?";
+  const params = new URLSearchParams();
+  params.append("part", "snippet,contentDetails,id");
+  params.append("maxResults", "50");
+  params.append("playlistId", "RDCLAK5uy_n9Fbdw7e6ap-98_A-8JYBmPv64v-Uaq1g");
+  const res = await fetch(URL + params, {
+    headers: {
+      Authorization: "Bearer " + accessToken,
+    },
+  });
+  return await res.json();
 };
