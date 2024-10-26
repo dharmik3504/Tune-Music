@@ -6,6 +6,7 @@ import { SearchYT } from "@/components/SearchYt";
 import { getServiceObj, GetSpotifyUrl } from "../api/spotify/route";
 import { getSoptifyPlaylist } from "../lib/spotify";
 import { useCookies } from 'next-client-cookies';
+import { Transfer } from "@/components/Tranfer";
 
 export default function Dashboard() {
 
@@ -81,7 +82,8 @@ export default function Dashboard() {
 
           <div>
             {/* <SearchYT /> */}
-            {spotifyAccessToken}
+            <Transfer/>
+            {/* {spotifyAccessToken} */}
           
           </div>
         </div>
